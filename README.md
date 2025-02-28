@@ -46,11 +46,6 @@ This project is a web-based spreadsheet application inspired by Google Sheets. I
 - **Context API**: Manages formatting state.
 - **CSS**: Styling and layout adjustments.
 
-### Backend
-- **Node.js & Express.js**: API handling and backend logic.
-- **MongoDB**: Persistent storage for spreadsheets.
-
----
 
 ## Project Structure
 ```
