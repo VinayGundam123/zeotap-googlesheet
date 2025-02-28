@@ -1,135 +1,104 @@
-# Getting Started with Create React App
-
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
-
-## Available Scripts
-
-In the project directory, you can run:
-
-### `npm start`
-
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
-
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
-
-### `npm run build`
-
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
-
-# Google Sheets Clone
+# Spreadsheet Web Application
 
 ## Overview
-This project is a web-based spreadsheet application inspired by Google Sheets. It provides an interactive grid where users can enter, format, and process data using various spreadsheet functionalities.
+This project is a web-based spreadsheet application inspired by Google Sheets. It provides an interactive grid with support for formulas, data formatting, and a customizable toolbar. The application is built using the MERN stack with React on the frontend and Handsontable for handling spreadsheet functionalities.
 
 ## Features
-- **Spreadsheet-like Grid**: Handsontable-powered interface for seamless interaction.
-- **Cell Formatting**: Bold, Italics, Font Size, Font Color.
-- **Conditional Formatting**: Apply different styles based on cell values.
-- **Advanced Formulas**: HyperFormula integration for complex calculations.
-- **Custom Cell Rendering**: Modify cell display dynamically.
-- **Dropdown Menus**: Provide predefined selections for specific columns.
-- **Keyboard Shortcuts**: Improve user efficiency.
-- **Drag-to-Fill**: Extend values/formats across cells.
-- **Merged Cells Support**: Format multiple selected cells as one.
-- **Context Menu**: Right-click menu for additional operations.
-
----
+- **Spreadsheet Grid:** Implements Handsontable for an interactive grid layout.
+- **Formula Support:** Uses HyperFormula for executing mathematical expressions.
+- **Toolbar:** Provides text formatting options like bold, italics, underline, and font size adjustments.
+- **Formula Bar:** Allows users to enter and manipulate formulas.
+- **Bottom Bar:** Placeholder component for additional functionalities.
+- **Context Provider:** Uses React Context API to manage formatting state across components.
 
 ## Tech Stack
-### Frontend
-- **React.js**: Component-based UI.
-- **Handsontable**: Provides the spreadsheet functionality.
-- **HyperFormula**: Enables formula evaluation.
-- **Context API**: Manages formatting state.
-- **CSS**: Styling and layout adjustments.
-
+- **Frontend:** React.js
+- **Spreadsheet Engine:** Handsontable & HyperFormula
+- **State Management:** React Context API
+- **Styling:** CSS Modules
 
 ## Project Structure
 ```
-root/
-├── public/             # Static assets
-├── src/
-│   ├── components/
-│   │   ├── Grid.js         # Spreadsheet component
-│   │   ├── Formulabar.js   # Toolbar with formatting buttons
-│   │   ├── Sidebar.js      # Additional options (future enhancement)
-│   ├── context/
-│   │   ├── FormattingContext.js # Context API for formatting state
-│   ├── styles/
-│   │   ├── Grid.css        # Grid styles
-│   │   ├── Formulabar.css  # Toolbar styles
-│   ├── App.js              # Main app component
-│   ├── index.js            # Entry point
-├── server/
-│   ├── models/             # Database models
-│   ├── routes/             # API endpoints
-│   ├── server.js           # Express server
-├── package.json           # Dependencies and scripts
-└── README.md              # Project documentation
+├── src
+│   ├── components
+│   │   ├── Toolbar.js
+│   │   ├── Formulabar.js
+│   │   ├── Grid.js
+│   │   ├── Bottombar.js
+│   ├── context
+│   │   ├── FormattingContext.js
+│   ├── App.js
+│   ├── SpreadsheetGrid.js
+│   ├── index.js
 ```
 
----
+### Component Breakdown
+1. **App.js**
+   - Renders the `SpreadsheetGrid` component.
 
-## Application Flow
-1. **User loads the application**
-   - React renders the `Grid` and `Formulabar` components.
-   - Handsontable initializes a blank spreadsheet.
-2. **User interacts with the grid**
-   - Typing in a cell updates the **2D array state**.
-   - Selecting a cell stores the selection.
-3. **User applies formatting**
-   - Clicks `B` (bold), `I` (italic), etc.
-   - Selected cells update using `setCellMeta()`.
-4. **User enters a formula**
-   - HyperFormula processes calculations.
-   - Dependencies update automatically.
-5. **User saves data**
-   - Backend stores grid state in MongoDB.
-6. **User reopens spreadsheet**
-   - Data is fetched and displayed in Handsontable.
+2. **SpreadsheetGrid.js**
+   - Combines all major components: `Toolbar`, `Formulabar`, `Grid`, and `Bottombar`.
+   - Wraps components inside `FormattingProvider` to manage formatting state.
 
----
+3. **Toolbar.js**
+   - Displays the spreadsheet title.
+   - Provides menu options like File, Edit, View, Insert, etc.
+   - Allows renaming of the spreadsheet.
 
-## Data Structures Used
-### 1. **2D Array for Spreadsheet Data**
-```js
-const [data, setData] = useState(
-  Array.from({ length: 1000 }, () => Array(52).fill(""))
-);
+4. **Formulabar.js**
+   - Offers buttons for text formatting (bold, italic, underline).
+   - Controls font size and color selection.
+
+5. **Grid.js**
+   - Implements the Handsontable grid for data entry.
+   - Supports formulas, context menu, and formatting features.
+   - Utilizes `afterChangeHandler` and `afterSelectionHandler` to apply custom styling.
+
+6. **Bottombar.js**
+   - Placeholder component for potential future features.
+
+## Installation
+### Prerequisites
+Ensure you have Node.js installed.
+
+### Steps
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/VinayGundam123/Share-favorite-place.git
+   ```
+2. Navigate to the project directory:
+   ```sh
+   cd Share-favorite-place
+   ```
+3. Install dependencies:
+   ```sh
+   npm install
+   ```
+4. Start the development server:
+   ```sh
+   npm start
+   ```
+
+## Usage
+- Click on the spreadsheet title to rename it.
+- Enter data into the grid, apply formulas, and format text using the toolbar.
+- Use the formula bar to modify text styles and font sizes dynamically.
+
+## Additional Modules
+This project uses the following external libraries:
+- `handsontable` - For rendering the spreadsheet grid.
+- `hyperformula` - To enable formula calculations.
+
+To manually install these dependencies, run:
+```sh
+npm install handsontable hyperformula
 ```
-- Efficient row/column access.
-- Supports fast cell updates.
 
-### 2. **Object-based Metadata for Formatting**
-```js
-hot.setCellMeta(row, col, "className", "bold");
-```
-- Keeps styling separate from data.
-- Enables per-cell formatting.
+## Future Improvements
+- Implementing advanced spreadsheet functionalities.
+- Adding data export/import options.
+- Enhancing UI/UX to further match Google Sheets.
 
-### 3. **Context API for Global State**
-```js
-const [formatting, setFormatting] = useState({ bold: false });
-```
-- Centralized UI state management.
-
-### 4. **HyperFormula for Formula Processing**
-- Uses **hash maps** for caching formulas.
-- Ensures recalculations happen efficiently.
-
-## Accuracy of Data and Mathematical Implementation
-- **Formula Handling**: HyperFormula ensures accurate calculations.
-- **Floating-Point Precision Fix**: Prevents rounding errors in calculations.
-- **Optimized Performance**:
-  - Batch updates prevent excessive re-renders.
-  - Handsontable efficiently handles large data sets.
-
-
-
-## Conclusion
-This project replicates core Google Sheets functionalities while optimizing for performance and usability. It utilizes React, Handsontable, and HyperFormula to deliver a powerful spreadsheet experience in a web application.
-
+## License
+This project is licensed under the MIT License.
 
